@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "OpenDCSLauncher (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "OpenDCSLauncher (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
