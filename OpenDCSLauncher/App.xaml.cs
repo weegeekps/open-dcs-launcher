@@ -1,6 +1,9 @@
 ﻿using Microsoft.UI.Xaml;
 using System;
+using Windows.Graphics;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Graphics.Display;
+using WinUIEx;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -23,6 +26,7 @@ namespace OpenDCSLauncher
             InitializeComponent();
 
             var services = new ServiceCollection();
+            services.AddScoped<IMainViewModel, MainViewModel>();
             services.AddTransient(typeof(MainWindow));
 
             ServiceProvider = services.BuildServiceProvider();
@@ -35,6 +39,8 @@ namespace OpenDCSLauncher
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
             var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
+            mainWindow.SetWindowSize(500, 380);
+            mainWindow.CenterOnScreen();
             mainWindow.Activate();
         }
     }

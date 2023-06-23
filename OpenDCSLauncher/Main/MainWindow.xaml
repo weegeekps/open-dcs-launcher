@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<winUiEx:WindowEx
+    x:Class="OpenDCSLauncher.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OpenDCSLauncher"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:winUiEx="using:WinUIEx"
+    mc:Ignorable="d"
+    Title="Open DCS Launcher">
+    <Grid>
+        <Grid.Resources>
+            <Style x:Key="PanelMargins" TargetType="Panel">
+                <Setter Property="Margin" Value="4, 4, 4, 4"></Setter>
+            </Style>
+            <Style BasedOn="{StaticResource PanelMargins}" TargetType="StackPanel"></Style>
+            <Style BasedOn="{StaticResource PanelMargins}" TargetType="RelativePanel"></Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Spacing="4">
+            <StackPanel.Resources>
+                <Style x:Key="ActionStyle" TargetType="Control">
+                    <Setter Property="FontSize" Value="20" />
+                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                </Style>
+                <Style BasedOn="{StaticResource ActionStyle}" TargetType="Button" />
+                <Style BasedOn="{StaticResource ActionStyle}" TargetType="ComboBox" />
+            </StackPanel.Resources>
+            <ComboBox></ComboBox>
+            <Button Content="Launch DCS" Command="{x:Bind ViewModel.LaunchCommand}" />
+            <Button Content="Update DCS" Command="{x:Bind ViewModel.UpdateCommand}" />
+            <Button Content="Manage Modules" Command="{x:Bind ViewModel.ManageCommand}" />
+            <Button Content="Settings" Command="{x:Bind ViewModel.SettingsCommand}" />
+        </StackPanel>
+        <RelativePanel Grid.Row="1" VerticalAlignment="Stretch">
+            <RelativePanel.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="FontSize" Value="12" />
+                </Style>
+            </RelativePanel.Resources>
+            <TextBlock RelativePanel.Above="GithubLinkTextBlock">This is free and open source software.</TextBlock>
+            <TextBlock x:Name="GithubLinkTextBlock" RelativePanel.AlignBottomWithPanel="True">
+                <Hyperlink NavigateUri="https://github.com/weegeekps/open-dcs-launcher">Interested in contributing or have a request? Check out our Github.</Hyperlink>
+            </TextBlock>
+        </RelativePanel>
+    </Grid>
+
+</winUiEx:WindowEx>
