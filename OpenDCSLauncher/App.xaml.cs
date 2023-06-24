@@ -1,8 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using System;
-using Windows.Graphics;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Graphics.Display;
+using OpenDCSLauncher.Settings;
 using WinUIEx;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -26,8 +25,15 @@ namespace OpenDCSLauncher
             InitializeComponent();
 
             var services = new ServiceCollection();
+
+            #region View Models
             services.AddScoped<IMainViewModel, MainViewModel>();
+            services.AddScoped<ISettingsViewModel, SettingsViewModel>();
+            #endregion
+
+            #region Windows
             services.AddTransient(typeof(MainWindow));
+            #endregion
 
             ServiceProvider = services.BuildServiceProvider();
         }
