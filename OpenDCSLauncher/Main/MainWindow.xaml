@@ -7,15 +7,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:winUiEx="using:WinUIEx"
-    mc:Ignorable="d"
-    Title="Open DCS Launcher">
+    mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
             <Style x:Key="PanelMargins" TargetType="Panel">
-                <Setter Property="Margin" Value="4, 4, 4, 4"></Setter>
+                <Setter Property="Margin" Value="4, 4, 4, 4" />
             </Style>
-            <Style BasedOn="{StaticResource PanelMargins}" TargetType="StackPanel"></Style>
-            <Style BasedOn="{StaticResource PanelMargins}" TargetType="RelativePanel"></Style>
+            <Style BasedOn="{StaticResource PanelMargins}" TargetType="StackPanel" />
+            <Style BasedOn="{StaticResource PanelMargins}" TargetType="RelativePanel" />
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -51,5 +50,4 @@
             </TextBlock>
         </RelativePanel>
     </Grid>
-
 </winUiEx:WindowEx>

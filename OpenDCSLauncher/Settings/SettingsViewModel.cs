@@ -5,17 +5,18 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Windows.Storage.Pickers;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Xaml;
 
 namespace OpenDCSLauncher.Settings;
 
 public interface ISettingsViewModel : IDisposable, INotifyPropertyChanged { }
 
-class SettingsViewModel : ISettingsViewModel
+public class SettingsViewModel : ISettingsViewModel
 {
-    private readonly RelayCommand _browseForStableDirectoryCommand;
-    private readonly RelayCommand _browseForBetaDirectoryCommand;
-    private readonly RelayCommand _saveAndCloseCommand;
-    private readonly RelayCommand _closeCommand;
+    private readonly RelayCommand<Window> _browseForStableDirectoryCommand;
+    private readonly RelayCommand<Window> _browseForBetaDirectoryCommand;
+    private readonly RelayCommand<Window> _saveAndCloseCommand;
+    private readonly RelayCommand<Window> _closeCommand;
     private string _errorMessage = string.Empty;
     private DirectoryInfo? _stableDirectoryInfo;
     private DirectoryInfo? _betaDirectoryInfo;
@@ -32,7 +33,6 @@ class SettingsViewModel : ISettingsViewModel
         get => _stableDirectoryInfo?.ToString() ?? string.Empty;
         set
         {
-            if (Equals(value, _stableDirectoryInfo?.ToString() ?? string.Empty)) return;
             _stableDirectoryInfo = new DirectoryInfo(value);
             OnPropertyChanged();
         }
@@ -43,7 +43,6 @@ class SettingsViewModel : ISettingsViewModel
         get => _betaDirectoryInfo?.ToString() ?? string.Empty;
         set
         {
-            if (!Equals(value, _betaDirectoryInfo?.ToString() ?? string.Empty)) return;
             _betaDirectoryInfo = new DirectoryInfo(value);
             OnPropertyChanged();
         }
@@ -62,10 +61,10 @@ class SettingsViewModel : ISettingsViewModel
 
     public SettingsViewModel()
     {
-        _browseForStableDirectoryCommand = new RelayCommand(BrowseForStableDirectoryAction);
-        _browseForBetaDirectoryCommand = new RelayCommand(BrowseForBetaDirectoryAction);
-        _saveAndCloseCommand = new RelayCommand(SaveAndCloseAction);
-        _closeCommand = new RelayCommand(CloseAction);
+        _browseForStableDirectoryCommand = new RelayCommand<Window>(BrowseForStableDirectoryAction);
+        _browseForBetaDirectoryCommand = new RelayCommand<Window>(BrowseForBetaDirectoryAction);
+        _saveAndCloseCommand = new RelayCommand<Window>(SaveAndCloseAction);
+        _closeCommand = new RelayCommand<Window>(CloseAction);
     }
 
     public void Dispose() { }
@@ -74,19 +73,26 @@ class SettingsViewModel : ISettingsViewModel
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-    private static FileOpenPicker CreateDcsFileOpenPicker()
+    private FileOpenPicker CreateDcsFileOpenPicker(Window window)
     {
-        return new FileOpenPicker()
+        var picker = new FileOpenPicker()
         {
             ViewMode = PickerViewMode.List,
             SuggestedStartLocation = PickerLocationId.ComputerFolder,
-            FileTypeFilter = { "DCS.exe" }
+            FileTypeFilter = { ".exe" }
         };
+
+        var windowHandle = WinRT.Interop.WindowNative.GetWindowHandle(window);
+        WinRT.Interop.InitializeWithWindow.Initialize(picker, windowHandle);
+
+        return picker;
     }
 
-    private async void BrowseForStableDirectoryAction()
+    private async void BrowseForStableDirectoryAction(Window? window)
     {
-        var file = await CreateDcsFileOpenPicker().PickSingleFileAsync();
+        if (window == null) throw new ArgumentNullException(nameof(window));
+
+        var file = await CreateDcsFileOpenPicker(window).PickSingleFileAsync();
         
         if (file == null)
         {
@@ -99,9 +105,11 @@ class SettingsViewModel : ISettingsViewModel
         StableDirectoryInfo = file.Path;
     }
 
-    private async void BrowseForBetaDirectoryAction()
+    private async void BrowseForBetaDirectoryAction(Window? window)
     {
-        var file = await CreateDcsFileOpenPicker().PickSingleFileAsync();
+        if (window == null) throw new ArgumentNullException(nameof(window));
+
+        var file = await CreateDcsFileOpenPicker(window).PickSingleFileAsync();
 
         if (file == null)
         {
@@ -114,21 +122,15 @@ class SettingsViewModel : ISettingsViewModel
         BetaDirectoryInfo = file.Path;
     }
 
-    private void SaveAndCloseAction()
+    private void SaveAndCloseAction(Window? window)
     {
         throw new NotImplementedException();
     }
 
-    private void CloseAction()
+    private void CloseAction(Window? window)
     {
-        // TODO: Reimplement this for WinUI.
-
-        throw new NotImplementedException();
-
-        // Window? window = maybeWindow as Window;
-        //
-        // if (window != null) throw new ArgumentNullException(nameof(window));
-        //
-        // window.Close();
+        if (window == null) throw new ArgumentNullException(nameof(window));
+        
+        window.Close();
     }
 }

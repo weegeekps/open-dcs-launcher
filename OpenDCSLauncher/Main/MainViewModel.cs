@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
+using OpenDCSLauncher.Services;
 
 namespace OpenDCSLauncher;
 
@@ -14,6 +15,7 @@ public class MainViewModel : IMainViewModel
     private readonly RelayCommand _updateCommand;
     private readonly RelayCommand _manageCommand;
     private readonly RelayCommand _settingsCommand;
+    private readonly IWindowService _windowService;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -22,8 +24,9 @@ public class MainViewModel : IMainViewModel
     public ICommand ManageCommand => _manageCommand;
     public ICommand SettingsCommand => _settingsCommand;
     
-    public MainViewModel()
+    public MainViewModel(IWindowService windowService)
     {
+        _windowService = windowService;
         _launchCommand = new RelayCommand(LaunchAction);
         _updateCommand = new RelayCommand(UpdateAction);
         _manageCommand = new RelayCommand(ManageAction);
@@ -32,10 +35,10 @@ public class MainViewModel : IMainViewModel
 
     public void Dispose()
     {
-        throw new NotImplementedException();
+        // Eventually will need this when I start to incorporate some Rx flows.
     }
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
@@ -58,7 +61,7 @@ public class MainViewModel : IMainViewModel
 
     private void SettingsAction()
     {
-        throw new NotImplementedException();
+        _windowService.ShowSettings();
     }
     #endregion
 }
