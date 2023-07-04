@@ -30,7 +30,11 @@ public partial class App
         #region View Models
         services.AddScoped<IMainViewModel, MainViewModel>();
         services.AddScoped<ISettingsViewModel, SettingsViewModel>();
+        #endregion
+
+        #region Services
         services.AddScoped<IWindowService, WindowService>();
+        services.AddSingleton<ISettingsService, SettingsService>();
         #endregion
 
         #region Windows
@@ -47,6 +51,9 @@ public partial class App
     /// <param name="args">Details about the launch request and process.</param>
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
+        var settingsService = ServiceProvider.GetService<ISettingsService>();
+        settingsService?.Load();
+
         MainWindow = ServiceProvider.GetRequiredService<MainWindow>();
         MainWindow.Activate();
     }

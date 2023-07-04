@@ -6,20 +6,20 @@ using System.Windows.Input;
 using Windows.Storage.Pickers;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
+using OpenDCSLauncher.Services;
 
 namespace OpenDCSLauncher.Settings;
 
-public interface ISettingsViewModel : IDisposable, INotifyPropertyChanged { }
+public interface ISettingsViewModel : INotifyPropertyChanged { }
 
 public class SettingsViewModel : ISettingsViewModel
 {
+    private readonly ISettingsService _settingsService;
     private readonly RelayCommand<Window> _browseForStableDirectoryCommand;
     private readonly RelayCommand<Window> _browseForBetaDirectoryCommand;
     private readonly RelayCommand<Window> _saveAndCloseCommand;
     private readonly RelayCommand<Window> _closeCommand;
     private string _errorMessage = string.Empty;
-    private DirectoryInfo? _stableDirectoryInfo;
-    private DirectoryInfo? _betaDirectoryInfo;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -30,20 +30,20 @@ public class SettingsViewModel : ISettingsViewModel
 
     public string StableDirectoryInfo
     {
-        get => _stableDirectoryInfo?.ToString() ?? string.Empty;
+        get => _settingsService.Settings?.GetBranch("Stable")?.DirectoryPath ?? string.Empty;
         set
         {
-            _stableDirectoryInfo = new DirectoryInfo(value);
+            _settingsService.Settings?.CreateOrUpdateBranch("Stable", value);
             OnPropertyChanged();
         }
     }
 
     public string BetaDirectoryInfo
     {
-        get => _betaDirectoryInfo?.ToString() ?? string.Empty;
+        get => _settingsService.Settings?.GetBranch("Beta")?.DirectoryPath ?? string.Empty;
         set
         {
-            _betaDirectoryInfo = new DirectoryInfo(value);
+            _settingsService.Settings?.CreateOrUpdateBranch("Beta", value);
             OnPropertyChanged();
         }
     }
@@ -59,15 +59,14 @@ public class SettingsViewModel : ISettingsViewModel
         }
     }
 
-    public SettingsViewModel()
+    public SettingsViewModel(ISettingsService settingsService)
     {
+        _settingsService = settingsService;
         _browseForStableDirectoryCommand = new RelayCommand<Window>(BrowseForStableDirectoryAction);
         _browseForBetaDirectoryCommand = new RelayCommand<Window>(BrowseForBetaDirectoryAction);
         _saveAndCloseCommand = new RelayCommand<Window>(SaveAndCloseAction);
         _closeCommand = new RelayCommand<Window>(CloseAction);
     }
-
-    public void Dispose() { }
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
@@ -124,7 +123,9 @@ public class SettingsViewModel : ISettingsViewModel
 
     private void SaveAndCloseAction(Window? window)
     {
-        throw new NotImplementedException();
+        _settingsService.Save();
+        
+        CloseAction(window);
     }
 
     private void CloseAction(Window? window)

@@ -21,7 +21,5 @@ public sealed partial class SettingsWindow
         {
             this.CenterOnScreen(600, 400);
         };
-
-        Closed += (_, _) => ViewModel.Dispose();
     }
 }
