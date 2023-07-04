@@ -40,4 +40,14 @@ public class SettingsModel
     }
 
     public BranchSettings? GetBranch(string name) => Branches.FirstOrDefault(b => b.Name != null && b.Name.Equals(name));
+
+    public void RemoveBranch(string name)
+    {
+        var index = (Branches as List<BranchSettings>)?.FindIndex(b => b.Name != null && b.Name.Equals(name)) ?? -1;
+
+        if (index >= 0)
+        {
+            Branches.RemoveAt(index);
+        }
+    }
 }

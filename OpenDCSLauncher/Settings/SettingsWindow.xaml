@@ -44,7 +44,7 @@
                          Margin="0 0 8 0"
                          Header="Path to stable DCS installation"
                          PlaceholderText="{StaticResource PlaceholderText}" 
-                         Text="{x:Bind ViewModel.StableDirectoryInfo, Mode=OneWay}" />
+                         Text="{x:Bind ViewModel.StableDirectoryInfo, Mode=TwoWay}" />
                 <Button x:Name="BrowseForStableDirectoryButton"
                         RelativePanel.AlignRightWithPanel="True"
                         RelativePanel.AlignBottomWithPanel="True"
@@ -60,7 +60,7 @@
                          Margin="0 0 8 0"
                          Header="Path to beta DCS installation"
                          PlaceholderText="{StaticResource PlaceholderText}" 
-                         Text="{x:Bind ViewModel.BetaDirectoryInfo, Mode=OneWay}" />
+                         Text="{x:Bind ViewModel.BetaDirectoryInfo, Mode=TwoWay}" />
                 <Button x:Name="BrowseForBetaDirectoryButton"
                         RelativePanel.AlignRightWithPanel="True"
                         RelativePanel.AlignBottomWithPanel="True"

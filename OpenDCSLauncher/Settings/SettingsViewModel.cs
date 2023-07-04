@@ -33,7 +33,15 @@ public class SettingsViewModel : ISettingsViewModel
         get => _settingsService.Settings?.GetBranch("Stable")?.DirectoryPath ?? string.Empty;
         set
         {
-            _settingsService.Settings?.CreateOrUpdateBranch("Stable", value);
+            if (value != string.Empty)
+            {
+                _settingsService.Settings?.CreateOrUpdateBranch("Stable", value);
+            }
+            else
+            {
+                _settingsService.Settings?.RemoveBranch("Stable");
+            }
+            
             OnPropertyChanged();
         }
     }
@@ -43,7 +51,15 @@ public class SettingsViewModel : ISettingsViewModel
         get => _settingsService.Settings?.GetBranch("Beta")?.DirectoryPath ?? string.Empty;
         set
         {
-            _settingsService.Settings?.CreateOrUpdateBranch("Beta", value);
+            if (value != string.Empty)
+            {
+                _settingsService.Settings?.CreateOrUpdateBranch("Beta", value);
+            }
+            else
+            {
+                _settingsService.Settings?.RemoveBranch("Beta");
+            }
+
             OnPropertyChanged();
         }
     }
