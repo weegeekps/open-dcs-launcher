@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Windows.Storage.Pickers;
@@ -10,7 +9,9 @@ using OpenDCSLauncher.Services;
 
 namespace OpenDCSLauncher.Settings;
 
-public interface ISettingsViewModel : INotifyPropertyChanged { }
+public interface ISettingsViewModel : INotifyPropertyChanged
+{
+}
 
 public class SettingsViewModel : ISettingsViewModel
 {
@@ -19,6 +20,8 @@ public class SettingsViewModel : ISettingsViewModel
     private readonly RelayCommand<Window> _browseForBetaDirectoryCommand;
     private readonly RelayCommand<Window> _saveAndCloseCommand;
     private readonly RelayCommand<Window> _closeCommand;
+    private string _stableDirectoryValidationErrorMessage = string.Empty;
+    private string _betaDirectoryValidationErrorMessage = string.Empty;
     private string _errorMessage = string.Empty;
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -41,7 +44,7 @@ public class SettingsViewModel : ISettingsViewModel
             {
                 _settingsService.Settings?.RemoveBranch("Stable");
             }
-            
+
             OnPropertyChanged();
         }
     }
@@ -61,6 +64,48 @@ public class SettingsViewModel : ISettingsViewModel
             }
 
             OnPropertyChanged();
+        }
+    }
+
+    public string StableDirectoryValidationErrorMessage
+    {
+        get => _stableDirectoryValidationErrorMessage;
+        set
+        {
+            if (Equals(value, _stableDirectoryValidationErrorMessage)) return;
+            _stableDirectoryValidationErrorMessage = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string BetaDirectoryValidationErrorMessage
+    {
+        get => _betaDirectoryValidationErrorMessage;
+        set
+        {
+            if (Equals(value, _betaDirectoryValidationErrorMessage)) return;
+            _betaDirectoryValidationErrorMessage = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public Visibility StableDirectoryValidationErrorMessageVisibility
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(_stableDirectoryValidationErrorMessage)) return Visibility.Collapsed;
+
+            return Visibility.Visible;
+        }
+    }
+
+    public Visibility BetaDirectoryValidationErrorMessageVisibility
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(_betaDirectoryValidationErrorMessage)) return Visibility.Collapsed;
+
+            return Visibility.Visible;
         }
     }
 
@@ -88,6 +133,7 @@ public class SettingsViewModel : ISettingsViewModel
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+
     private FileOpenPicker CreateDcsFileOpenPicker(Window window)
     {
         var picker = new FileOpenPicker()
@@ -108,7 +154,7 @@ public class SettingsViewModel : ISettingsViewModel
         if (window == null) throw new ArgumentNullException(nameof(window));
 
         var file = await CreateDcsFileOpenPicker(window).PickSingleFileAsync();
-        
+
         if (file == null)
         {
             ErrorMessage = "You must pick a DCS.exe file to continue.";
@@ -140,14 +186,14 @@ public class SettingsViewModel : ISettingsViewModel
     private void SaveAndCloseAction(Window? window)
     {
         _settingsService.Save();
-        
+
         CloseAction(window);
     }
 
     private void CloseAction(Window? window)
     {
         if (window == null) throw new ArgumentNullException(nameof(window));
-        
+
         window.Close();
     }
 }

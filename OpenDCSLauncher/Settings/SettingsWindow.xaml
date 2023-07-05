@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <winUiEx:WindowEx
     x:Class="OpenDCSLauncher.Settings.SettingsWindow"
     x:Name="SettingsWindowBinding"
@@ -37,34 +38,42 @@
             <TextBlock Grid.Row="0" Grid.Column="0" FontSize="24">Launcher Settings</TextBlock>
             <!-- TODO: Eventually refactor this to use a custom control to cut down on the repeating. -->
             <RelativePanel Grid.Row="1" Grid.Column="0">
-                <TextBox RelativePanel.AlignBottomWithPanel="True"
+                <TextBox x:Name="StableDirectoryPathTextBox"
                          RelativePanel.AlignLeftWithPanel="True"
                          RelativePanel.LeftOf="BrowseForStableDirectoryButton"
                          Height="60"
                          Margin="0 0 8 0"
                          Header="Path to stable DCS installation"
-                         PlaceholderText="{StaticResource PlaceholderText}" 
+                         PlaceholderText="{StaticResource PlaceholderText}"
                          Text="{x:Bind ViewModel.StableDirectoryInfo, Mode=TwoWay}" />
+                <TextBlock RelativePanel.Below="StableDirectoryPathTextBox"
+                           RelativePanel.AlignLeftWithPanel="True"
+                           Visibility="{x:Bind ViewModel.StableDirectoryValidationErrorMessageVisibility}"
+                           Text="{x:Bind ViewModel.StableDirectoryValidationErrorMessage}" />
                 <Button x:Name="BrowseForStableDirectoryButton"
                         RelativePanel.AlignRightWithPanel="True"
                         RelativePanel.AlignBottomWithPanel="True"
-                        Content="{StaticResource FilePickerButtonText}" 
+                        Content="{StaticResource FilePickerButtonText}"
                         Command="{x:Bind ViewModel.BrowseForStableDirectoryCommand}"
                         CommandParameter="{x:Bind SettingsWindowBinding}" />
             </RelativePanel>
             <RelativePanel Grid.Row="2" Grid.Column="0">
-                <TextBox RelativePanel.AlignBottomWithPanel="True"
+                <TextBox x:Name="BetaDirectoryPathTextBox"
                          RelativePanel.AlignLeftWithPanel="True"
                          RelativePanel.LeftOf="BrowseForBetaDirectoryButton"
                          Height="60"
                          Margin="0 0 8 0"
                          Header="Path to beta DCS installation"
-                         PlaceholderText="{StaticResource PlaceholderText}" 
+                         PlaceholderText="{StaticResource PlaceholderText}"
                          Text="{x:Bind ViewModel.BetaDirectoryInfo, Mode=TwoWay}" />
+                <TextBlock RelativePanel.Below="BetaDirectoryPathTextBox"
+                           RelativePanel.AlignLeftWithPanel="True"
+                           Visibility="{x:Bind ViewModel.BetaDirectoryValidationErrorMessageVisibility}"
+                           Text="{x:Bind ViewModel.BetaDirectoryValidationErrorMessage}" />
                 <Button x:Name="BrowseForBetaDirectoryButton"
                         RelativePanel.AlignRightWithPanel="True"
                         RelativePanel.AlignBottomWithPanel="True"
-                        Content="{StaticResource FilePickerButtonText}" 
+                        Content="{StaticResource FilePickerButtonText}"
                         Command="{x:Bind ViewModel.BrowseForBetaDirectoryCommand}"
                         CommandParameter="{x:Bind SettingsWindowBinding}" />
             </RelativePanel>
@@ -81,7 +90,7 @@
             <Button x:Name="CloseButton"
                     RelativePanel.AlignRightWithPanel="True"
                     RelativePanel.AlignBottomWithPanel="True"
-                    Command="{x:Bind ViewModel.CloseCommand}" 
+                    Command="{x:Bind ViewModel.CloseCommand}"
                     CommandParameter="{x:Bind SettingsWindowBinding}">
                 Close without Saving
             </Button>
