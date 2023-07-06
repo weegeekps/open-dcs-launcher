@@ -33,10 +33,10 @@
                 <Style BasedOn="{StaticResource ActionStyle}" TargetType="ComboBox" />
             </StackPanel.Resources>
             <ComboBox></ComboBox>
-            <Button Content="Launch DCS" Command="{x:Bind ViewModel.LaunchCommand}" />
-            <Button Content="Update DCS" Command="{x:Bind ViewModel.UpdateCommand}" />
-            <Button Content="Manage Modules" Command="{x:Bind ViewModel.ManageCommand}" />
-            <Button Content="Settings" Command="{x:Bind ViewModel.SettingsCommand}" />
+            <Button Content="{x:Bind ViewModel.LaunchButtonText}" Command="{x:Bind ViewModel.LaunchCommand}" />
+            <Button Content="{x:Bind ViewModel.UpdateButtonText}" Command="{x:Bind ViewModel.UpdateCommand}" />
+            <Button Content="{x:Bind ViewModel.ManageModulesButtonText}" Command="{x:Bind ViewModel.ManageCommand}" />
+            <Button Content="{x:Bind ViewModel.SettingsButtonText}" Command="{x:Bind ViewModel.SettingsCommand}" />
         </StackPanel>
         <RelativePanel Grid.Row="1" VerticalAlignment="Stretch">
             <RelativePanel.Resources>
@@ -44,9 +44,9 @@
                     <Setter Property="FontSize" Value="12" />
                 </Style>
             </RelativePanel.Resources>
-            <TextBlock RelativePanel.Above="GithubLinkTextBlock">This is free and open source software.</TextBlock>
+            <TextBlock RelativePanel.Above="GithubLinkTextBlock" Text="{x:Bind ViewModel.FreeAndOpenSourceText}" />
             <TextBlock x:Name="GithubLinkTextBlock" RelativePanel.AlignBottomWithPanel="True">
-                <Hyperlink NavigateUri="https://github.com/weegeekps/open-dcs-launcher">Interested in contributing or have a request? Check out our Github.</Hyperlink>
+                <Hyperlink NavigateUri="https://github.com/weegeekps/open-dcs-launcher"><Run Text="{x:Bind ViewModel.GitHubLinkText}" /></Hyperlink>
             </TextBlock>
         </RelativePanel>
     </Grid>

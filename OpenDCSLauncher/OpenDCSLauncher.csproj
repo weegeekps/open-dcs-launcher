@@ -56,6 +56,9 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Update="Main\MainViewModel.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Settings\SettingsViewModel.resx">
       <Generator></Generator>
     </EmbeddedResource>

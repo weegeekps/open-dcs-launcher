@@ -3,14 +3,18 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Localization;
 using OpenDCSLauncher.Services;
 
 namespace OpenDCSLauncher;
 
-public interface IMainViewModel : IDisposable, INotifyPropertyChanged { }
+public interface IMainViewModel : IDisposable, INotifyPropertyChanged
+{
+}
 
 public class MainViewModel : IMainViewModel
 {
+    private readonly IStringLocalizer<MainViewModel> _localization;
     private readonly RelayCommand _launchCommand;
     private readonly RelayCommand _updateCommand;
     private readonly RelayCommand _manageCommand;
@@ -19,13 +23,25 @@ public class MainViewModel : IMainViewModel
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
+    #region Localization Properties
+    public LocalizedString FreeAndOpenSourceText => _localization["FreeAndOpenSourceText"];
+    public LocalizedString GitHubLinkText => _localization["GitHubLinkText"];
+    public LocalizedString LaunchButtonText => _localization["LaunchButtonText"];
+    public LocalizedString UpdateButtonText => _localization["UpdateButtonText"];
+    public LocalizedString ManageModulesButtonText => _localization["ManageModulesButtonText"];
+    public LocalizedString SettingsButtonText => _localization["SettingsButtonText"];
+    #endregion
+
+    #region Command Properties
     public ICommand LaunchCommand => _launchCommand;
     public ICommand UpdateCommand => _updateCommand;
     public ICommand ManageCommand => _manageCommand;
     public ICommand SettingsCommand => _settingsCommand;
-    
-    public MainViewModel(IWindowService windowService)
+    #endregion
+
+    public MainViewModel(IStringLocalizer<MainViewModel> localization, IWindowService windowService)
     {
+        _localization = localization;
         _windowService = windowService;
         _launchCommand = new RelayCommand(LaunchAction);
         _updateCommand = new RelayCommand(UpdateAction);
@@ -43,7 +59,7 @@ public class MainViewModel : IMainViewModel
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    #region Action Handlers
+    #region Actions
     private void LaunchAction()
     {
         throw new NotImplementedException();
