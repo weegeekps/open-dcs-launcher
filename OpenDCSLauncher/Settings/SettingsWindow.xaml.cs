@@ -1,3 +1,4 @@
+using Microsoft.UI.Xaml.Input;
 using WinUIEx;
 
 namespace OpenDCSLauncher.Settings;
@@ -17,9 +18,6 @@ public sealed partial class SettingsWindow
 
         ViewModel = (viewModel as SettingsViewModel)!;
 
-        Activated += (_, _) =>
-        {
-            this.CenterOnScreen(600, 400);
-        };
+        Activated += (_, _) => { this.CenterOnScreen(600, 400); };
     }
 }

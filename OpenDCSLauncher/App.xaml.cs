@@ -27,6 +27,11 @@ public partial class App
 
         var services = new ServiceCollection();
 
+        #region .NET Services
+        services.AddLogging();
+        services.AddLocalization();
+        #endregion
+
         #region View Models
         services.AddScoped<IMainViewModel, MainViewModel>();
         services.AddScoped<ISettingsViewModel, SettingsViewModel>();

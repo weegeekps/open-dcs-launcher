@@ -9,14 +9,14 @@
 
   <Identity
     Name="d6ad7614-4129-431b-8f41-c3ee4c3a8de2"
-    Publisher="CN=amorris"
+    Publisher="CN=kernelpanicstudios"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="d6ad7614-4129-431b-8f41-c3ee4c3a8de2" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>OpenDCSLauncher</DisplayName>
-    <PublisherDisplayName>amorris</PublisherDisplayName>
+    <DisplayName>Open DCS Launcher</DisplayName>
+    <PublisherDisplayName>Kernel Panic Studios</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -26,7 +26,7 @@
   </Dependencies>
 
   <Resources>
-    <Resource Language="x-generate"/>
+    <Resource Language="en-us"/>
   </Resources>
 
   <Applications>
