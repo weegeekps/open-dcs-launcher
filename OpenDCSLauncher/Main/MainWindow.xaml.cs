@@ -1,3 +1,4 @@
+using Microsoft.UI.Xaml;
 using WinUIEx;
 
 namespace OpenDCSLauncher;
@@ -17,10 +18,7 @@ public sealed partial class MainWindow
 
         ViewModel = (viewModel as MainViewModel)!;
 
-        Activated += (_, _) =>
-        {
-            this.CenterOnScreen(500, 380);
-        };
+        Activated += (_, _) => { this.CenterOnScreen(500, 380); };
 
         Closed += (_, _) => ViewModel.Dispose();
     }

@@ -15,6 +15,9 @@ public class SettingsModel
     [DataMember(Name = "branch")]
     public IList<BranchSettings> Branches { get; set; }
 
+    [IgnoreDataMember]
+    public bool ShouldPromptForSettings => Branches.Count < 1;
+
     public SettingsModel()
     {
         Branches = new List<BranchSettings>();
@@ -39,7 +42,8 @@ public class SettingsModel
         branch.DirectoryPath = directoryPath;
     }
 
-    public BranchSettings? GetBranch(string name) => Branches.FirstOrDefault(b => b.Name != null && b.Name.Equals(name));
+    public BranchSettings? GetBranch(string name) =>
+        Branches.FirstOrDefault(b => b.Name != null && b.Name.Equals(name));
 
     public void RemoveBranch(string name)
     {

@@ -3,14 +3,13 @@ using System.IO;
 using System.Threading.Tasks;
 using OpenDCSLauncher.Models;
 using Tomlyn;
-using Tomlyn.Syntax;
 
 namespace OpenDCSLauncher.Services;
 
 public interface ISettingsService
 {
     public SettingsModel? Settings { get; }
-    public void Load();
+    public Task Load();
     public Task<bool> Save();
 }
 
@@ -35,7 +34,7 @@ public class SettingsService : ISettingsService
         return $"{appDataPath}\\{AppDataFolderName}\\{SettingsFileName}";
     }
 
-    public async void Load()
+    public async Task Load()
     {
         var settingsFilePath = GetSettingsFilePath();
 

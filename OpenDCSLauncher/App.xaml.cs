@@ -54,12 +54,18 @@ public partial class App
     /// Invoked when the application is launched.
     /// </summary>
     /// <param name="args">Details about the launch request and process.</param>
-    protected override void OnLaunched(LaunchActivatedEventArgs args)
+    protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
         var settingsService = ServiceProvider.GetService<ISettingsService>();
-        settingsService?.Load();
+        await settingsService?.Load()!;
 
         MainWindow = ServiceProvider.GetRequiredService<MainWindow>();
         MainWindow.Activate();
+
+        if (settingsService.Settings?.ShouldPromptForSettings ?? true)
+        {
+            var windowService = ServiceProvider.GetService<IWindowService>();
+            windowService?.ShowSettings();
+        }
     }
 }
