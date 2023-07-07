@@ -15,11 +15,12 @@ public interface IMainViewModel : IDisposable, INotifyPropertyChanged
 public class MainViewModel : IMainViewModel
 {
     private readonly IStringLocalizer<MainViewModel> _localization;
+    private readonly ISettingsService _settingsService;
+    private readonly IWindowService _windowService;
     private readonly RelayCommand _launchCommand;
     private readonly RelayCommand _updateCommand;
     private readonly RelayCommand _manageCommand;
     private readonly RelayCommand _settingsCommand;
-    private readonly IWindowService _windowService;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -39,9 +40,11 @@ public class MainViewModel : IMainViewModel
     public ICommand SettingsCommand => _settingsCommand;
     #endregion
 
-    public MainViewModel(IStringLocalizer<MainViewModel> localization, IWindowService windowService)
+    public MainViewModel(IStringLocalizer<MainViewModel> localization, ISettingsService settingsService,
+        IWindowService windowService)
     {
         _localization = localization;
+        _settingsService = settingsService;
         _windowService = windowService;
         _launchCommand = new RelayCommand(LaunchAction);
         _updateCommand = new RelayCommand(UpdateAction);

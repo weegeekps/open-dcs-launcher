@@ -94,11 +94,9 @@ public class SettingsViewModel : ISettingsViewModel
         get => _stableDirectoryValidationErrorMessage;
         set
         {
-            if (Equals(value, _stableDirectoryValidationErrorMessage)) return;
             _stableDirectoryValidationErrorMessage = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(StableDirectoryValidationErrorMessageVisibility));
-            OnPropertyChanged(nameof(SaveAndCloseButtonIsEnabled));
         }
     }
 
@@ -107,11 +105,9 @@ public class SettingsViewModel : ISettingsViewModel
         get => _betaDirectoryValidationErrorMessage;
         set
         {
-            if (Equals(value, _betaDirectoryValidationErrorMessage)) return;
             _betaDirectoryValidationErrorMessage = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(BetaDirectoryValidationErrorMessageVisibility));
-            OnPropertyChanged(nameof(SaveAndCloseButtonIsEnabled));
         }
     }
 
@@ -139,10 +135,14 @@ public class SettingsViewModel : ISettingsViewModel
     {
         get
         {
-            if (string.IsNullOrWhiteSpace(_stableDirectoryValidationErrorMessage) &&
-                string.IsNullOrWhiteSpace(_betaDirectoryValidationErrorMessage)) return true;
+            if (!string.IsNullOrWhiteSpace(_stableDirectoryValidationErrorMessage) ||
+                !string.IsNullOrWhiteSpace(_betaDirectoryValidationErrorMessage))
+                return false;
 
-            return false;
+            if (string.IsNullOrWhiteSpace(StableDirectoryPath) &&
+                string.IsNullOrWhiteSpace(BetaDirectoryPath)) return false;
+
+            return true;
         }
     }
     #endregion
@@ -216,6 +216,8 @@ public class SettingsViewModel : ISettingsViewModel
         StableDirectoryValidationErrorMessage = !string.IsNullOrWhiteSpace(errorMessage) ? errorMessage : string.Empty;
 
         StableDirectoryPath = file?.Path ?? string.Empty;
+
+        OnPropertyChanged(nameof(SaveAndCloseButtonIsEnabled));
     }
 
     private async void BrowseForBetaDirectoryAction(Window? window)
@@ -229,18 +231,24 @@ public class SettingsViewModel : ISettingsViewModel
         BetaDirectoryValidationErrorMessage = !string.IsNullOrWhiteSpace(errorMessage) ? errorMessage : string.Empty;
 
         BetaDirectoryPath = file?.Path ?? string.Empty;
+
+        OnPropertyChanged(nameof(SaveAndCloseButtonIsEnabled));
     }
 
     private void ClearStableDirectoryAction()
     {
         StableDirectoryPath = string.Empty;
         StableDirectoryValidationErrorMessage = string.Empty;
+
+        OnPropertyChanged(nameof(SaveAndCloseButtonIsEnabled));
     }
 
     private void ClearBetaDirectoryAction()
     {
         BetaDirectoryPath = string.Empty;
         BetaDirectoryValidationErrorMessage = string.Empty;
+
+        OnPropertyChanged(nameof(SaveAndCloseButtonIsEnabled));
     }
 
     private void SaveAndCloseAction(Window? window)
