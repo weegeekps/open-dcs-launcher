@@ -7,6 +7,7 @@ using Windows.Storage.Pickers;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Localization;
 using Microsoft.UI.Xaml;
+using OpenDCSLauncher.Models;
 using OpenDCSLauncher.Services;
 
 namespace OpenDCSLauncher.Settings;

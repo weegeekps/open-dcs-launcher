@@ -32,7 +32,7 @@
                 <Style BasedOn="{StaticResource ActionStyle}" TargetType="Button" />
                 <Style BasedOn="{StaticResource ActionStyle}" TargetType="ComboBox" />
             </StackPanel.Resources>
-            <ComboBox></ComboBox>
+            <ComboBox ItemsSource="{x:Bind ViewModel.AvailableSelections}" SelectedItem="{x:Bind ViewModel.CurrentSelection}" />
             <Button Content="{x:Bind ViewModel.LaunchButtonText}" Command="{x:Bind ViewModel.LaunchCommand}" />
             <Button Content="{x:Bind ViewModel.UpdateButtonText}" Command="{x:Bind ViewModel.UpdateCommand}" />
             <Button Content="{x:Bind ViewModel.ManageModulesButtonText}" Command="{x:Bind ViewModel.ManageCommand}" />
