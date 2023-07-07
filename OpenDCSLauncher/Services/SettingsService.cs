@@ -11,6 +11,7 @@ public interface ISettingsService
     public SettingsModel? Settings { get; }
     public Task Load();
     public Task<bool> Save();
+    public event EventHandler SettingsChanged;
 }
 
 public class SettingsService : ISettingsService
@@ -48,6 +49,8 @@ public class SettingsService : ISettingsService
         var settings = Toml.ToModel<SettingsModel>(data);
 
         Settings = settings;
+
+        SettingsChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public async Task<bool> Save()
@@ -61,6 +64,10 @@ public class SettingsService : ISettingsService
         await stream.WriteAsync(data);
         await stream.FlushAsync();
 
+        SettingsChanged?.Invoke(this, EventArgs.Empty);
+
         return true;
     }
+
+    public event EventHandler? SettingsChanged;
 }

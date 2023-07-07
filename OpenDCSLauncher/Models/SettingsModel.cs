@@ -4,23 +4,25 @@ using System.Runtime.Serialization;
 
 namespace OpenDCSLauncher.Models;
 
-public class BranchSettings
+public class BranchInfo
 {
     public string? Name { get; set; }
     public string? DirectoryPath { get; set; }
+
+    public override string ToString() => Name ?? string.Empty;
 }
 
 public class SettingsModel
 {
     [DataMember(Name = "branch")]
-    public IList<BranchSettings> Branches { get; set; }
+    public IList<BranchInfo> Branches { get; set; }
 
     [IgnoreDataMember]
     public bool ShouldPromptForSettings => Branches.Count < 1;
 
     public SettingsModel()
     {
-        Branches = new List<BranchSettings>();
+        Branches = new List<BranchInfo>();
     }
 
     public void CreateOrUpdateBranch(string name, string directoryPath)
@@ -29,7 +31,7 @@ public class SettingsModel
 
         if (branch == null)
         {
-            branch = new BranchSettings
+            branch = new BranchInfo
             {
                 Name = name,
                 DirectoryPath = directoryPath
@@ -42,12 +44,12 @@ public class SettingsModel
         branch.DirectoryPath = directoryPath;
     }
 
-    public BranchSettings? GetBranch(string name) =>
+    public BranchInfo? GetBranch(string name) =>
         Branches.FirstOrDefault(b => b.Name != null && b.Name.Equals(name));
 
     public void RemoveBranch(string name)
     {
-        var index = (Branches as List<BranchSettings>)?.FindIndex(b => b.Name != null && b.Name.Equals(name)) ?? -1;
+        var index = (Branches as List<BranchInfo>)?.FindIndex(b => b.Name != null && b.Name.Equals(name)) ?? -1;
 
         if (index >= 0)
         {

@@ -1,12 +1,36 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Localization;
+using OpenDCSLauncher.Models;
 using OpenDCSLauncher.Services;
 
 namespace OpenDCSLauncher;
+
+public struct LauncherSelection
+{
+    public readonly BranchInfo BranchInfo;
+    public bool UseMultiThreading;
+
+    public LauncherSelection(BranchInfo branchInfo, bool useMultiThreading)
+    {
+        BranchInfo = branchInfo;
+        UseMultiThreading = useMultiThreading;
+    }
+
+    public override string ToString()
+    {
+        var displayString = BranchInfo.Name ?? "Unknown";
+
+        if (UseMultiThreading) displayString += " (Multi-threaded)";
+
+        return displayString;
+    }
+}
 
 public interface IMainViewModel : IDisposable, INotifyPropertyChanged
 {
@@ -40,6 +64,11 @@ public class MainViewModel : IMainViewModel
     public ICommand SettingsCommand => _settingsCommand;
     #endregion
 
+    #region Data Properties
+    public ObservableCollection<LauncherSelection> AvailableSelections { get; private set; }
+    public LauncherSelection? CurrentSelection { get; set; }
+    #endregion
+
     public MainViewModel(IStringLocalizer<MainViewModel> localization, ISettingsService settingsService,
         IWindowService windowService)
     {
@@ -50,6 +79,11 @@ public class MainViewModel : IMainViewModel
         _updateCommand = new RelayCommand(UpdateAction);
         _manageCommand = new RelayCommand(ManageAction);
         _settingsCommand = new RelayCommand(SettingsAction);
+
+        AvailableSelections = new ObservableCollection<LauncherSelection>();
+        UpdateAvailableSelections();
+
+        _settingsService.SettingsChanged += HandleSettingsChanged;
     }
 
     public void Dispose()
@@ -83,4 +117,34 @@ public class MainViewModel : IMainViewModel
         _windowService.ShowSettings();
     }
     #endregion
+
+    #region Event Handlers
+    private void HandleSettingsChanged(object? sender, EventArgs e)
+    {
+        UpdateAvailableSelections();
+    }
+    #endregion
+
+    private void UpdateAvailableSelections()
+    {
+        AvailableSelections.Clear();
+
+        if (_settingsService.Settings == null) return;
+
+        foreach (var branch in _settingsService.Settings.Branches)
+        {
+            // Multi-threading is first because that's what I want and I assume most everyone else does too.
+            // TODO: Make this an enum once Tomlyn fixes enums. https://github.com/xoofx/Tomlyn/issues/55
+            if (branch.Name == "Beta")
+            {
+                AvailableSelections.Add(new LauncherSelection(branch, true));
+            }
+
+            AvailableSelections.Add(new LauncherSelection(branch, false));
+        }
+
+        if (AvailableSelections.Count <= 0) return;
+
+        CurrentSelection = AvailableSelections[0];
+    }
 }
