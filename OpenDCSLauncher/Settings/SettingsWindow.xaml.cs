@@ -14,7 +14,8 @@ public sealed partial class SettingsWindow
     {
         InitializeComponent();
 
-        Title = @"Open DCS Launcher Settings";
+        ExtendsContentIntoTitleBar = true;
+        SetTitleBar(AppTitleBar);
 
         ViewModel = (viewModel as SettingsViewModel)!;
 
