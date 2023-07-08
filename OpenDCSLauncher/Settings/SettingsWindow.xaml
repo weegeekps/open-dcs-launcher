@@ -9,39 +9,46 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:winUiEx="using:WinUIEx"
+    xmlns:openDcsLauncher="using:OpenDCSLauncher"
     mc:Ignorable="d">
     <Grid>
-        <Grid.Resources>
-            <Style x:Key="PanelMargins" TargetType="Panel">
-                <Setter Property="Margin" Value="4, 4, 4, 4" />
-            </Style>
-            <Style BasedOn="{StaticResource PanelMargins}" TargetType="Grid" />
-            <Style BasedOn="{StaticResource PanelMargins}" TargetType="RelativePanel" />
-        </Grid.Resources>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="34" />
+            <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <openDcsLauncher:TitleBar x:Name="AppTitleBar" />
+        <Grid Row="1">
             <Grid.Resources>
-                <Style x:Key="ErrorTextStyle" TargetType="TextBlock">
-                    <Setter Property="FontWeight" Value="SemiBold" />
-                    <Setter Property="Foreground" Value="Yellow" />
-                    <Setter Property="Margin" Value="0 4 0 0" />
+                <Style x:Key="PanelMargins" TargetType="Panel">
+                    <Setter Property="Margin" Value="4, 4, 4, 4" />
                 </Style>
+                <Style BasedOn="{StaticResource PanelMargins}" TargetType="Grid" />
+                <Style BasedOn="{StaticResource PanelMargins}" TargetType="RelativePanel" />
             </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*" />
                 <RowDefinition Height="2*" />
-                <RowDefinition Height="2*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Grid.Column="0" FontSize="24" Text="{x:Bind ViewModel.SettingsWindowHeader}" />
-            <!-- TODO: Eventually refactor this to use a custom control to cut down on the repeating. -->
-            <RelativePanel Grid.Row="1" Grid.Column="0">
-                <TextBox x:Name="StableDirectoryPathTextBox"
+            <Grid Grid.Row="0">
+                <Grid.Resources>
+                    <Style x:Key="ErrorTextStyle" TargetType="TextBlock">
+                        <Setter Property="FontWeight" Value="SemiBold" />
+                        <Setter Property="Foreground" Value="Yellow" />
+                        <Setter Property="Margin" Value="0 4 0 0" />
+                    </Style>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="2*" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" FontSize="24" Text="{x:Bind ViewModel.SettingsWindowHeader}" />
+                <!-- TODO: Eventually refactor this to use a custom control to cut down on the repeating. -->
+                <RelativePanel Grid.Row="1" Grid.Column="0">
+                    <TextBox x:Name="StableDirectoryPathTextBox"
                          RelativePanel.AlignLeftWithPanel="True"
                          RelativePanel.LeftOf="BrowseForStableDirectoryButton"
                          Height="60"
@@ -50,26 +57,26 @@
                          IsReadOnly="True"
                          PlaceholderText="{x:Bind ViewModel.PlaceholderText}"
                          Text="{x:Bind ViewModel.StableDirectoryPath, Mode=TwoWay}" />
-                <TextBlock RelativePanel.Below="StableDirectoryPathTextBox"
+                    <TextBlock RelativePanel.Below="StableDirectoryPathTextBox"
                            RelativePanel.AlignLeftWithPanel="True"
                            Style="{StaticResource ErrorTextStyle}"
                            Text="{x:Bind ViewModel.StableDirectoryValidationErrorMessage, Mode=OneWay}" />
-                <Button x:Name="BrowseForStableDirectoryButton"
+                    <Button x:Name="BrowseForStableDirectoryButton"
                         RelativePanel.AlignTopWithPanel="True"
                         RelativePanel.AlignRightWithPanel="True"
                         Margin="0 0 0 4"
                         Content="{x:Bind ViewModel.FilePickerButtonText}"
                         Command="{x:Bind ViewModel.BrowseForStableDirectoryCommand}"
                         CommandParameter="{x:Bind SettingsWindowBinding}" />
-                <Button RelativePanel.AlignRightWithPanel="True"
+                    <Button RelativePanel.AlignRightWithPanel="True"
                         RelativePanel.AlignLeftWith="BrowseForStableDirectoryButton"
                         RelativePanel.Below="BrowseForStableDirectoryButton"
                         HorizontalAlignment="Stretch"
                         Content="{x:Bind ViewModel.ClearButtonText}"
                         Command="{x:Bind ViewModel.ClearStableDirectoryCommand}" />
-            </RelativePanel>
-            <RelativePanel Grid.Row="2" Grid.Column="0">
-                <TextBox x:Name="BetaDirectoryPathTextBox"
+                </RelativePanel>
+                <RelativePanel Grid.Row="2" Grid.Column="0">
+                    <TextBox x:Name="BetaDirectoryPathTextBox"
                          RelativePanel.AlignLeftWithPanel="True"
                          RelativePanel.LeftOf="BrowseForBetaDirectoryButton"
                          Height="60"
@@ -78,27 +85,27 @@
                          IsReadOnly="True"
                          PlaceholderText="{x:Bind ViewModel.PlaceholderText}"
                          Text="{x:Bind ViewModel.BetaDirectoryPath, Mode=TwoWay}" />
-                <TextBlock RelativePanel.Below="BetaDirectoryPathTextBox"
+                    <TextBlock RelativePanel.Below="BetaDirectoryPathTextBox"
                            RelativePanel.AlignLeftWithPanel="True"
                            Style="{StaticResource ErrorTextStyle}"
                            Text="{x:Bind ViewModel.BetaDirectoryValidationErrorMessage, Mode=OneWay}" />
-                <Button x:Name="BrowseForBetaDirectoryButton"
+                    <Button x:Name="BrowseForBetaDirectoryButton"
                         RelativePanel.AlignTopWithPanel="True"
                         RelativePanel.AlignRightWithPanel="True"
                         Margin="0 0 0 4"
                         Content="{x:Bind ViewModel.FilePickerButtonText}"
                         Command="{x:Bind ViewModel.BrowseForBetaDirectoryCommand}"
                         CommandParameter="{x:Bind SettingsWindowBinding}" />
-                <Button RelativePanel.AlignRightWithPanel="True"
+                    <Button RelativePanel.AlignRightWithPanel="True"
                         RelativePanel.AlignLeftWith="BrowseForBetaDirectoryButton"
                         RelativePanel.Below="BrowseForBetaDirectoryButton"
                         HorizontalAlignment="Stretch"
                         Content="{x:Bind ViewModel.ClearButtonText}"
                         Command="{x:Bind ViewModel.ClearBetaDirectoryCommand}" />
-            </RelativePanel>
-        </Grid>
-        <RelativePanel Grid.Row="1" VerticalAlignment="Stretch">
-            <Button RelativePanel.LeftOf="CloseButton"
+                </RelativePanel>
+            </Grid>
+            <RelativePanel Grid.Row="1" VerticalAlignment="Stretch">
+                <Button RelativePanel.LeftOf="CloseButton"
                     RelativePanel.AlignBottomWithPanel="True"
                     Style="{StaticResource AccentButtonStyle}"
                     Margin="0, 0, 8, 0"
@@ -106,12 +113,13 @@
                     Command="{x:Bind ViewModel.SaveAndCloseCommand}"
                     CommandParameter="{x:Bind SettingsWindowBinding}"
                     IsEnabled="{x:Bind ViewModel.SaveAndCloseButtonIsEnabled, Mode=OneWay}" />
-            <Button x:Name="CloseButton"
+                <Button x:Name="CloseButton"
                     RelativePanel.AlignRightWithPanel="True"
                     RelativePanel.AlignBottomWithPanel="True"
                     Content="{x:Bind ViewModel.CloseButtonText}"
                     Command="{x:Bind ViewModel.CloseCommand}"
                     CommandParameter="{x:Bind SettingsWindowBinding}" />
-        </RelativePanel>
+            </RelativePanel>
+        </Grid>
     </Grid>
 </winUiEx:WindowEx>

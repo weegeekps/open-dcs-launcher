@@ -10,7 +10,7 @@
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="32" />
+            <RowDefinition Height="34" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <local:TitleBar x:Name="AppTitleBar" />

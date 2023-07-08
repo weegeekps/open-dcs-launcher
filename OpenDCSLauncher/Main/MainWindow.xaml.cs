@@ -13,8 +13,6 @@ public sealed partial class MainWindow
     {
         InitializeComponent();
 
-        Title = @"Open DCS Launcher";
-
         ExtendsContentIntoTitleBar = true;
         SetTitleBar(AppTitleBar);
 
