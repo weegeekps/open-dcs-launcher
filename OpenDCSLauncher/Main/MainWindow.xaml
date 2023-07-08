@@ -9,45 +9,52 @@
     xmlns:winUiEx="using:WinUIEx"
     mc:Ignorable="d">
     <Grid>
-        <Grid.Resources>
-            <Style x:Key="PanelMargins" TargetType="Panel">
-                <Setter Property="Margin" Value="4, 4, 4, 4" />
-            </Style>
-            <Style BasedOn="{StaticResource PanelMargins}" TargetType="StackPanel" />
-            <Style BasedOn="{StaticResource PanelMargins}" TargetType="RelativePanel" />
-        </Grid.Resources>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="32" />
+            <RowDefinition />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Spacing="4">
-            <StackPanel.Resources>
-                <Style x:Key="ActionStyle" TargetType="Control">
-                    <Setter Property="FontSize" Value="20" />
-                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <local:TitleBar x:Name="AppTitleBar" />
+        <Grid Grid.Row="1">
+            <Grid.Resources>
+                <Style x:Key="PanelMargins" TargetType="Panel">
+                    <Setter Property="Margin" Value="4, 4, 4, 4" />
                 </Style>
-                <Style BasedOn="{StaticResource ActionStyle}" TargetType="Button" />
-                <Style BasedOn="{StaticResource ActionStyle}" TargetType="ComboBox" />
-            </StackPanel.Resources>
-            <ComboBox ItemsSource="{x:Bind ViewModel.AvailableSelections}" SelectedItem="{x:Bind ViewModel.CurrentSelection}" />
-            <Button Content="{x:Bind ViewModel.LaunchButtonText}" Command="{x:Bind ViewModel.LaunchCommand}" />
-            <Button Content="{x:Bind ViewModel.UpdateButtonText}" Command="{x:Bind ViewModel.UpdateCommand}" />
-            <Button Content="{x:Bind ViewModel.ManageModulesButtonText}" Command="{x:Bind ViewModel.ManageCommand}" />
-            <Button Content="{x:Bind ViewModel.SettingsButtonText}" Command="{x:Bind ViewModel.SettingsCommand}" />
-        </StackPanel>
-        <RelativePanel Grid.Row="1" VerticalAlignment="Stretch">
-            <RelativePanel.Resources>
-                <Style TargetType="TextBlock">
-                    <Setter Property="FontSize" Value="12" />
-                </Style>
-            </RelativePanel.Resources>
-            <TextBlock RelativePanel.Above="GithubLinkTextBlock" Text="{x:Bind ViewModel.FreeAndOpenSourceText}" />
-            <TextBlock x:Name="GithubLinkTextBlock" RelativePanel.AlignBottomWithPanel="True">
+                <Style BasedOn="{StaticResource PanelMargins}" TargetType="StackPanel" />
+                <Style BasedOn="{StaticResource PanelMargins}" TargetType="RelativePanel" />
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Spacing="4">
+                <StackPanel.Resources>
+                    <Style x:Key="ActionStyle" TargetType="Control">
+                        <Setter Property="FontSize" Value="20" />
+                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                    </Style>
+                    <Style BasedOn="{StaticResource ActionStyle}" TargetType="Button" />
+                    <Style BasedOn="{StaticResource ActionStyle}" TargetType="ComboBox" />
+                </StackPanel.Resources>
+                <ComboBox ItemsSource="{x:Bind ViewModel.AvailableSelections}" SelectedItem="{x:Bind ViewModel.CurrentSelection}" />
+                <Button Content="{x:Bind ViewModel.LaunchButtonText}" Command="{x:Bind ViewModel.LaunchCommand}" />
+                <Button Content="{x:Bind ViewModel.UpdateButtonText}" Command="{x:Bind ViewModel.UpdateCommand}" />
+                <Button Content="{x:Bind ViewModel.ManageModulesButtonText}" Command="{x:Bind ViewModel.ManageCommand}" />
+                <Button Content="{x:Bind ViewModel.SettingsButtonText}" Command="{x:Bind ViewModel.SettingsCommand}" />
+            </StackPanel>
+            <RelativePanel Grid.Row="1" VerticalAlignment="Stretch">
+                <RelativePanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="12" />
+                    </Style>
+                </RelativePanel.Resources>
+                <TextBlock RelativePanel.Above="GithubLinkTextBlock" Text="{x:Bind ViewModel.FreeAndOpenSourceText}" />
+                <TextBlock x:Name="GithubLinkTextBlock" RelativePanel.AlignBottomWithPanel="True">
                 <Hyperlink NavigateUri="https://github.com/weegeekps/open-dcs-launcher"><Run Text="{x:Bind ViewModel.GitHubLinkText}" /></Hyperlink>
-            </TextBlock>
-        </RelativePanel>
+                </TextBlock>
+            </RelativePanel>
+        </Grid>
     </Grid>
 </winUiEx:WindowEx>

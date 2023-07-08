@@ -6,4 +6,14 @@
   <PropertyGroup>
     <ActiveDebugProfile>OpenDCSLauncher (Unpackaged)</ActiveDebugProfile>
   </PropertyGroup>
+  <ItemGroup>
+    <Page Update="TitleBar\TitleBar.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
 </Project>

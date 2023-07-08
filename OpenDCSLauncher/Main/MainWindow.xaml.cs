@@ -1,4 +1,3 @@
-using Microsoft.UI.Xaml;
 using WinUIEx;
 
 namespace OpenDCSLauncher;
@@ -15,6 +14,9 @@ public sealed partial class MainWindow
         InitializeComponent();
 
         Title = @"Open DCS Launcher";
+
+        ExtendsContentIntoTitleBar = true;
+        SetTitleBar(AppTitleBar);
 
         ViewModel = (viewModel as MainViewModel)!;
 

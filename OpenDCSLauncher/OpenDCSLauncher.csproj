@@ -15,6 +15,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Settings\SettingsWindow.xaml" />
+    <None Remove="TitleBar\TitleBar.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -62,6 +63,11 @@
     <EmbeddedResource Update="Settings\SettingsViewModel.resx">
       <Generator></Generator>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="TitleBar\TitleBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <!-- 
