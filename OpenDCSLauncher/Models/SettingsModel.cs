@@ -9,6 +9,12 @@ public class BranchInfo
     public string? Name { get; set; }
     public string? DirectoryPath { get; set; }
 
+    [IgnoreDataMember]
+    public string BinPath => $"{DirectoryPath}\\bin";
+
+    [IgnoreDataMember]
+    public string BinMtPath => $"{DirectoryPath}\\bin-mt";
+
     public override string ToString() => Name ?? string.Empty;
 }
 

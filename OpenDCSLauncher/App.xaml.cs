@@ -38,8 +38,9 @@ public partial class App
         #endregion
 
         #region Services
-        services.AddScoped<IWindowService, WindowService>();
+        services.AddScoped<ILauncherService, LauncherService>();
         services.AddSingleton<ISettingsService, SettingsService>();
+        services.AddScoped<IWindowService, WindowService>();
         #endregion
 
         #region Windows
