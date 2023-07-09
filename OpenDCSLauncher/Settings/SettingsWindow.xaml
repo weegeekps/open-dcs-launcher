@@ -56,7 +56,7 @@
                          Header="{x:Bind ViewModel.StablePathHeader}"
                          IsReadOnly="True"
                          PlaceholderText="{x:Bind ViewModel.PlaceholderText}"
-                         Text="{x:Bind ViewModel.StableDirectoryPath, Mode=TwoWay}" />
+                         Text="{x:Bind ViewModel.StableBinPath, Mode=TwoWay}" />
                     <TextBlock RelativePanel.Below="StableDirectoryPathTextBox"
                            RelativePanel.AlignLeftWithPanel="True"
                            Style="{StaticResource ErrorTextStyle}"
@@ -84,7 +84,7 @@
                          Header="{x:Bind ViewModel.BetaPathHeader}"
                          IsReadOnly="True"
                          PlaceholderText="{x:Bind ViewModel.PlaceholderText}"
-                         Text="{x:Bind ViewModel.BetaDirectoryPath, Mode=TwoWay}" />
+                         Text="{x:Bind ViewModel.BetaBinPath, Mode=TwoWay}" />
                     <TextBlock RelativePanel.Below="BetaDirectoryPathTextBox"
                            RelativePanel.AlignLeftWithPanel="True"
                            Style="{StaticResource ErrorTextStyle}"

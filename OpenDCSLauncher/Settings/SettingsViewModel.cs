@@ -51,15 +51,22 @@ public class SettingsViewModel : ISettingsViewModel
     public ICommand CloseCommand => _closeCommand;
     #endregion
 
-    #region Directory Path Properties
-    public string StableDirectoryPath
+    #region Path Properties
+    public string StableBinPath
     {
-        get => _settingsService.Settings?.GetBranch("Stable")?.DirectoryPath ?? string.Empty;
+        get => $"{_settingsService.Settings?.GetBranch("Stable")?.BinPath}\\DCS.exe";
         set
         {
             if (value != string.Empty)
             {
-                _settingsService.Settings?.CreateOrUpdateBranch("Stable", value);
+                // We actually save the directory path, not the bin path.
+                FileInfo fi = new FileInfo(value);
+
+                // Not handling the exception here is intentional. There's something badly wrong if the
+                // directory info is null, and we can't continue from here.
+                string dirPath = fi.Directory?.Parent?.ToString()!;
+
+                _settingsService.Settings?.CreateOrUpdateBranch("Stable", dirPath);
             }
             else
             {
@@ -70,14 +77,21 @@ public class SettingsViewModel : ISettingsViewModel
         }
     }
 
-    public string BetaDirectoryPath
+    public string BetaBinPath
     {
-        get => _settingsService.Settings?.GetBranch("Beta")?.DirectoryPath ?? string.Empty;
+        get => $"{_settingsService.Settings?.GetBranch("Beta")?.BinPath}\\DCS.exe";
         set
         {
             if (value != string.Empty)
             {
-                _settingsService.Settings?.CreateOrUpdateBranch("Beta", value);
+                // We actually save the directory path, not the bin path.
+                FileInfo fi = new FileInfo(value);
+
+                // Not handling the exception here is intentional. There's something badly wrong if the
+                // directory info is null, and we can't continue from here.
+                string dirPath = fi.Directory?.Parent?.ToString()!;
+
+                _settingsService.Settings?.CreateOrUpdateBranch("Beta", dirPath);
             }
             else
             {
@@ -140,8 +154,8 @@ public class SettingsViewModel : ISettingsViewModel
                 !string.IsNullOrWhiteSpace(_betaDirectoryValidationErrorMessage))
                 return false;
 
-            if (string.IsNullOrWhiteSpace(StableDirectoryPath) &&
-                string.IsNullOrWhiteSpace(BetaDirectoryPath)) return false;
+            if (string.IsNullOrWhiteSpace(StableBinPath) &&
+                string.IsNullOrWhiteSpace(BetaBinPath)) return false;
 
             return true;
         }
@@ -216,7 +230,7 @@ public class SettingsViewModel : ISettingsViewModel
         var errorMessage = PerformValidation(fi);
         StableDirectoryValidationErrorMessage = !string.IsNullOrWhiteSpace(errorMessage) ? errorMessage : string.Empty;
 
-        StableDirectoryPath = file?.Path ?? string.Empty;
+        StableBinPath = file?.Path ?? string.Empty;
 
         OnPropertyChanged(nameof(SaveAndCloseButtonIsEnabled));
     }
@@ -231,14 +245,14 @@ public class SettingsViewModel : ISettingsViewModel
         var errorMessage = PerformValidation(fi);
         BetaDirectoryValidationErrorMessage = !string.IsNullOrWhiteSpace(errorMessage) ? errorMessage : string.Empty;
 
-        BetaDirectoryPath = file?.Path ?? string.Empty;
+        BetaBinPath = file?.Path ?? string.Empty;
 
         OnPropertyChanged(nameof(SaveAndCloseButtonIsEnabled));
     }
 
     private void ClearStableDirectoryAction()
     {
-        StableDirectoryPath = string.Empty;
+        StableBinPath = string.Empty;
         StableDirectoryValidationErrorMessage = string.Empty;
 
         OnPropertyChanged(nameof(SaveAndCloseButtonIsEnabled));
@@ -246,7 +260,7 @@ public class SettingsViewModel : ISettingsViewModel
 
     private void ClearBetaDirectoryAction()
     {
-        BetaDirectoryPath = string.Empty;
+        BetaBinPath = string.Empty;
         BetaDirectoryValidationErrorMessage = string.Empty;
 
         OnPropertyChanged(nameof(SaveAndCloseButtonIsEnabled));

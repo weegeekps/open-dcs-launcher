@@ -1,36 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Localization;
+using Microsoft.UI.Xaml;
 using OpenDCSLauncher.Models;
 using OpenDCSLauncher.Services;
 
 namespace OpenDCSLauncher;
-
-public struct LauncherSelection
-{
-    public readonly BranchInfo BranchInfo;
-    public bool UseMultiThreading;
-
-    public LauncherSelection(BranchInfo branchInfo, bool useMultiThreading)
-    {
-        BranchInfo = branchInfo;
-        UseMultiThreading = useMultiThreading;
-    }
-
-    public override string ToString()
-    {
-        var displayString = BranchInfo.Name ?? "Unknown";
-
-        if (UseMultiThreading) displayString += " (Multi-threaded)";
-
-        return displayString;
-    }
-}
 
 public interface IMainViewModel : IDisposable, INotifyPropertyChanged
 {
@@ -38,9 +17,11 @@ public interface IMainViewModel : IDisposable, INotifyPropertyChanged
 
 public class MainViewModel : IMainViewModel
 {
+    private readonly ILauncherService _launcherService;
     private readonly IStringLocalizer<MainViewModel> _localization;
     private readonly ISettingsService _settingsService;
     private readonly IWindowService _windowService;
+
     private readonly RelayCommand _launchCommand;
     private readonly RelayCommand _updateCommand;
     private readonly RelayCommand _manageCommand;
@@ -69,12 +50,15 @@ public class MainViewModel : IMainViewModel
     public LauncherSelection? CurrentSelection { get; set; }
     #endregion
 
-    public MainViewModel(IStringLocalizer<MainViewModel> localization, ISettingsService settingsService,
+    public MainViewModel(ILauncherService launcherService, IStringLocalizer<MainViewModel> localization,
+        ISettingsService settingsService,
         IWindowService windowService)
     {
+        _launcherService = launcherService;
         _localization = localization;
         _settingsService = settingsService;
         _windowService = windowService;
+
         _launchCommand = new RelayCommand(LaunchAction);
         _updateCommand = new RelayCommand(UpdateAction);
         _manageCommand = new RelayCommand(ManageAction);
@@ -99,12 +83,25 @@ public class MainViewModel : IMainViewModel
     #region Actions
     private void LaunchAction()
     {
-        throw new NotImplementedException();
+        if (CurrentSelection == null) return;
+
+        if (!_launcherService.LaunchDcs(CurrentSelection))
+        {
+            // TODO: Show the error to the user.
+            return;
+        }
+
+        Application.Current.Exit();
     }
 
     private void UpdateAction()
     {
-        throw new NotImplementedException();
+        if (CurrentSelection == null) return;
+
+        if (!_launcherService.LaunchUpdater(CurrentSelection))
+        {
+            // TODO: Show the error to the user.
+        }
     }
 
     private void ManageAction()
