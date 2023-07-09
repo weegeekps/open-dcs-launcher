@@ -18,7 +18,12 @@ public sealed partial class MainWindow
 
         ViewModel = (viewModel as MainViewModel)!;
 
-        Activated += (_, _) => { this.CenterOnScreen(500, 380); };
+        Activated += (_, _) =>
+        {
+            this.CenterOnScreen(500, 420);
+            MinWidth = 500;
+            MinHeight = 420;
+        };
 
         Closed += (_, _) => ViewModel.Dispose();
     }

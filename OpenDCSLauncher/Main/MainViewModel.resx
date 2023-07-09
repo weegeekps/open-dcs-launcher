@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AdvancedActionsHeaderText" xml:space="preserve">
+    <value>Advanced DCS Updater Actions</value>
+  </data>
+  <data name="CleanupButtonText" xml:space="preserve">
+    <value>Cleanup DCS</value>
+  </data>
   <data name="FreeAndOpenSourceText" xml:space="preserve">
     <value>This is free and open source software.</value>
   </data>
@@ -128,6 +134,9 @@
   </data>
   <data name="ManageModulesButtonText" xml:space="preserve">
     <value>Manage Modules</value>
+  </data>
+  <data name="RepairButtonText" xml:space="preserve">
+    <value>Repair DCS</value>
   </data>
   <data name="SettingsButtonText" xml:space="preserve">
     <value>Settings</value>

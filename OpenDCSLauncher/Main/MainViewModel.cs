@@ -11,7 +11,7 @@ using OpenDCSLauncher.Services;
 
 namespace OpenDCSLauncher;
 
-public interface IMainViewModel : IDisposable, INotifyPropertyChanged
+public interface IMainViewModel : INotifyPropertyChanged
 {
 }
 
@@ -25,16 +25,21 @@ public class MainViewModel : IMainViewModel
     private readonly RelayCommand _launchCommand;
     private readonly RelayCommand _updateCommand;
     private readonly RelayCommand _manageCommand;
+    private readonly RelayCommand _repairCommand;
+    private readonly RelayCommand _cleanupCommand;
     private readonly RelayCommand _settingsCommand;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
     #region Localization Properties
+    public LocalizedString AdvancedActionsHeaderText => _localization["AdvancedActionsHeaderText"];
+    public LocalizedString CleanupButtonText => _localization["CleanupButtonText"];
     public LocalizedString FreeAndOpenSourceText => _localization["FreeAndOpenSourceText"];
     public LocalizedString GitHubLinkText => _localization["GitHubLinkText"];
     public LocalizedString LaunchButtonText => _localization["LaunchButtonText"];
     public LocalizedString UpdateButtonText => _localization["UpdateButtonText"];
     public LocalizedString ManageModulesButtonText => _localization["ManageModulesButtonText"];
+    public LocalizedString RepairButtonText => _localization["RepairButtonText"];
     public LocalizedString SettingsButtonText => _localization["SettingsButtonText"];
     #endregion
 
@@ -42,6 +47,8 @@ public class MainViewModel : IMainViewModel
     public ICommand LaunchCommand => _launchCommand;
     public ICommand UpdateCommand => _updateCommand;
     public ICommand ManageCommand => _manageCommand;
+    public ICommand RepairCommand => _repairCommand;
+    public ICommand CleanupCommand => _cleanupCommand;
     public ICommand SettingsCommand => _settingsCommand;
     #endregion
 
@@ -62,17 +69,14 @@ public class MainViewModel : IMainViewModel
         _launchCommand = new RelayCommand(LaunchAction);
         _updateCommand = new RelayCommand(UpdateAction);
         _manageCommand = new RelayCommand(ManageAction);
+        _repairCommand = new RelayCommand(RepairAction);
+        _cleanupCommand = new RelayCommand(CleanupAction);
         _settingsCommand = new RelayCommand(SettingsAction);
 
         AvailableSelections = new ObservableCollection<LauncherSelection>();
         UpdateAvailableSelections();
 
         _settingsService.SettingsChanged += HandleSettingsChanged;
-    }
-
-    public void Dispose()
-    {
-        // Eventually will need this when I start to incorporate some Rx flows.
     }
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -107,6 +111,26 @@ public class MainViewModel : IMainViewModel
     private void ManageAction()
     {
         throw new NotImplementedException();
+    }
+
+    private void RepairAction()
+    {
+        if (CurrentSelection == null) return;
+
+        if (!_launcherService.LaunchRepair(CurrentSelection))
+        {
+            // TODO: Show the error to the user.
+        }
+    }
+
+    private void CleanupAction()
+    {
+        if (CurrentSelection == null) return;
+
+        if (!_launcherService.LaunchCleanup(CurrentSelection))
+        {
+            // TODO: Show the error to the user.
+        }
     }
 
     private void SettingsAction()
