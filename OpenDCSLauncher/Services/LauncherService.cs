@@ -11,6 +11,8 @@ public interface ILauncherService
     public string LastErrorMessage { get; }
     public bool LaunchDcs(LauncherSelection selection);
     public bool LaunchUpdater(LauncherSelection selection);
+    public bool LaunchRepair(LauncherSelection selection);
+    public bool LaunchCleanup(LauncherSelection selection);
 }
 
 public class LauncherService : ILauncherService
@@ -45,6 +47,32 @@ public class LauncherService : ILauncherService
 
         var binPath = new DirectoryInfo(selection.BranchInfo.BinPath);
         var psi = CreateProcessStartInfo(binPath, "DCS_updater.exe", new List<string> { "update" });
+
+        return StartProcess(psi);
+    }
+
+    public bool LaunchRepair(LauncherSelection selection)
+    {
+        if (selection.BranchInfo.DirectoryPath == null)
+        {
+            return false;
+        }
+
+        var binPath = new DirectoryInfo(selection.BranchInfo.BinPath);
+        var psi = CreateProcessStartInfo(binPath, "DCS_updater.exe", new List<string> { "repair" });
+
+        return StartProcess(psi);
+    }
+
+    public bool LaunchCleanup(LauncherSelection selection)
+    {
+        if (selection.BranchInfo.DirectoryPath == null)
+        {
+            return false;
+        }
+
+        var binPath = new DirectoryInfo(selection.BranchInfo.BinPath);
+        var psi = CreateProcessStartInfo(binPath, "DCS_updater.exe", new List<string> { "cleanup" });
 
         return StartProcess(psi);
     }
